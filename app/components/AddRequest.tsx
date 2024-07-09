@@ -28,6 +28,9 @@ const AddRequest = ({ id }: { id: string }) => {
       drugs
     };
     try {
+      if(drugs.length==0){
+        throw new Error("Please add drugs to request.");
+      }
       const response = await fetch("/api/customer/AddRequest", {
         method: "POST",
         headers: {
