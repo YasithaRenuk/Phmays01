@@ -1,7 +1,12 @@
 import React from "react";
 import { signOut } from "next-auth/react";
 
-const Account = ({ id, email }) => {
+interface AccountProps {
+  id: string;
+  email: string;
+}
+
+const Account: React.FC<AccountProps> = ({ id, email }) => {
   return (
     <center>
       <div className="card bg-primary text-primary-content w-96">
@@ -29,4 +34,3 @@ const Account = ({ id, email }) => {
 };
 
 export default Account;
-  

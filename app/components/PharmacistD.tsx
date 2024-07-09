@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
-import ApprovedTable from './ApprovedTable'
+import ApprovedTable from './ApprovedTable';
 
-const PharmacistD = ({id}) => {
-  const [requests, setRequests] = useState(null);
-  const [loading, setLoading] = useState(true);
-  
+interface PharmacistDProps {
+  id: string; // or number, adjust as per your actual data type
+}
+
+const PharmacistD: React.FC<PharmacistDProps> = ({ id }) => {
+  const [requests, setRequests] = useState<any>(null); // Adjust 'any' based on actual response shape
+  const [loading, setLoading] = useState<boolean>(true);
+
   useEffect(() => {
     const fetchRequests = async () => {
       try {
@@ -13,7 +17,7 @@ const PharmacistD = ({id}) => {
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ phaid:id }),
+          body: JSON.stringify({ phaid: id }),
         });
 
         if (!response.ok) {
@@ -22,7 +26,6 @@ const PharmacistD = ({id}) => {
 
         const data = await response.json();
         setRequests(data);
-        console.log(data)
       } catch (error) {
         console.error("There was a problem with the fetch operation:", error);
       } finally {
@@ -49,9 +52,9 @@ const PharmacistD = ({id}) => {
           <div className="stat-value">{requests.requests.length}</div>
         </div>
       </div>
-      <ApprovedTable Requests={requests.requests} phaid = {id} />
-      </center>
-  )
-}
+      <ApprovedTable Requests={requests.requests}/>
+    </center>
+  );
+};
 
-export default PharmacistD
+export default PharmacistD;

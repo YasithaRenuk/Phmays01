@@ -1,6 +1,11 @@
-import React from "react";
+import React, { FC } from "react";
 
-const NavCustomer = ({ email, onNavChange }) => {
+interface NavCustomerProps {
+  email: string;
+  onNavChange: (page: string) => void;
+}
+
+const NavCustomer: FC<NavCustomerProps> = ({ email, onNavChange }) => {
   return (
     <div className="navbar bg-base-100" data-theme="cupcake">
       <div className="navbar-start">
@@ -29,7 +34,7 @@ const NavCustomer = ({ email, onNavChange }) => {
               <a href="#homepage" onClick={() => onNavChange('homepage')}>Homepage</a>
             </li>
             <li>
-              <a href="#check-request" onClick={() => onNavChange('checkRequest')}>check Request</a>
+              <a href="#check-request" onClick={() => onNavChange('checkRequest')}>Check Request</a>
             </li>
             <li>
               <a href="#account" onClick={() => onNavChange('account')}>Account</a>
@@ -38,7 +43,7 @@ const NavCustomer = ({ email, onNavChange }) => {
         </div>
       </div>
       <div className="navbar-center">
-        <a className="btn btn-ghost normal-case text-xl" href="/" >MedFund</a>
+        <a className="btn btn-ghost normal-case text-xl" href="/">MedFund</a>
       </div>
       <div className="navbar-end">
         <h1 className="text-sm">{email}</h1>

@@ -1,6 +1,11 @@
 import React from "react";
 
-const NavCustomer = ({ email, onNavChange }) => {
+interface NavCustomerProps {
+  email: string;
+  onNavChange: (page: string) => void;
+}
+
+const NavCustomer: React.FC<NavCustomerProps> = ({ email, onNavChange }) => {
   return (
     <div className="navbar bg-base-100" data-theme="cupcake">
       <div className="navbar-start">
@@ -38,7 +43,7 @@ const NavCustomer = ({ email, onNavChange }) => {
         </div>
       </div>
       <div className="navbar-center">
-        <a className="btn btn-ghost normal-case text-xl" href="/" >MedFund</a>
+        <a className="btn btn-ghost normal-case text-xl" href="/">MedFund</a>
       </div>
       <div className="navbar-end">
         <h1 className="text-sm">{email}</h1>

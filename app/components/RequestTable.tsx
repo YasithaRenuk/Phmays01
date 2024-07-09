@@ -1,7 +1,26 @@
 import React from "react";
 import DrugCard from "../components/drugCard";
 
-const RequestTable = ({ Requests }) => {
+interface Drug {
+  name: string;
+  quantity: number;
+  measurement: string;
+}
+
+interface Request {
+  id: string;
+  createDate: string;
+  drugs: Drug[];
+  isApproved: boolean;
+  pharmacistId: string | null;
+  pharmacistEmail?: string; // Optional if pharmacistId is null
+}
+
+interface RequestTableProps {
+  Requests: Request[];
+}
+
+const RequestTable: React.FC<RequestTableProps> = ({ Requests }) => {
   return (
     <div className="overflow-x-auto">
       <table className="table table-zebra">
@@ -19,7 +38,7 @@ const RequestTable = ({ Requests }) => {
         <tbody>
           {Requests.length === 0 ? (
             <tr>
-              <td colSpan="6">
+              <td colSpan={6}>
                 <div className="stat bg-white">
                   <p>There are no requests.</p>
                 </div>
@@ -55,7 +74,7 @@ const RequestTable = ({ Requests }) => {
                       <p>Still not Approved</p>
                     </div>
                   ) : (
-                    Request.pharmacistEmail
+                    Request.pharmacistEmail // Assuming this is only displayed when pharmacistId is not null
                   )}
                 </td>
               </tr>

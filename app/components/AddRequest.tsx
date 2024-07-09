@@ -3,12 +3,12 @@ import DrugCard from '../components/drugCard';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const AddRequest = (id) => {
-  const [drugs, setDrugs] = useState([]);
+const AddRequest = ({ id }: { id: string }) => {
+  const [drugs, setDrugs] = useState<{ name: string; quantity: string; measurement: string; }[]>([]);
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState("");
   const [measurement, setMeasurement] = useState("");
-  const customerId = id.id; // Replace with actual customer ID as needed
+  const customerId = id; // Replace with actual customer ID as needed
 
   const handleAddDrug = () => {
     const newDrug = { name, quantity, measurement };
@@ -16,7 +16,10 @@ const AddRequest = (id) => {
     setName("");
     setQuantity("");
     setMeasurement("");
-    document.getElementById("my_modal_2")?.close();
+    const modal = document.getElementById("my_modal_2") as HTMLDialogElement | null;
+    if (modal) {
+      modal.showModal(); // Use showModal method here
+    }
   };
 
   const handleSubmit = async () => {
@@ -42,9 +45,14 @@ const AddRequest = (id) => {
       toast.success("Request submitted successfully!");
       console.log("Response:", data);
       // Handle the response as needed
-    } catch (error) {
-      toast.error(`Error: ${error.message}`);
-      console.error("Error:", error);
+    } catch (error: any) { // Type assertion or specific error type
+      if (error instanceof Error) {
+        toast.error(`Error: ${error.message}`);
+        console.error("Error:", error);
+      } else {
+        toast.error(`Error occurred: ${error}`);
+        console.error("Error:", error);
+      }
       // Handle the error as needed
     }
   };
@@ -80,7 +88,6 @@ const AddRequest = (id) => {
                         />
                         <p></p>
                       </div>
-                      
                     ))
                   )}
                 </div>
@@ -89,7 +96,12 @@ const AddRequest = (id) => {
             <div className="card grid h-20 place-items-center">
               <button
                 className="btn"
-                onClick={() => document.getElementById("my_modal_2")?.showModal()}
+                onClick={() => {
+                  const modal = document.getElementById("my_modal_2") as HTMLDialogElement | null;
+                  if (modal) {
+                    modal.showModal(); // Use showModal method here
+                  }
+                }}
               >
                 Add Drug
               </button>

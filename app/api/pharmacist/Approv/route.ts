@@ -8,7 +8,7 @@ import ApprovedRequest from "@/app/models/ApprovedRequest";
 const getRequestSchema = z.object({
   reqid: z.string(),
   phaid: z.string(),
-  phaEmail:z.string()
+  phaEmail: z.string()
 });
 
 export async function POST(req: NextRequest) {
@@ -46,12 +46,17 @@ export async function POST(req: NextRequest) {
       pharmacistId: body.phaid,
       createDate: new Date(),
       coustomerEmail: customer.email,
-      drugs:request.drugs
+      drugs: request.drugs
     };
 
     const yes = await ApprovedRequest.create(approv);
 
-    const updateResult = await Required.findByIdAndUpdate(body.reqid, { isApproved: true, pharmacistId: body.phaid, pharmacistEmail:body.phaEmail }, { new: true });
+    const updateResult = await Required.findByIdAndUpdate(
+      body.reqid, 
+      { isApproved: true, pharmacistId: body.phaid, pharmacistEmail: body.phaEmail }, 
+      { new: true }
+    );
+
     if (!updateResult) {
       return NextResponse.json(
         { error: "Failed to update the request" },
@@ -66,8 +71,9 @@ export async function POST(req: NextRequest) {
 
   } catch (error) {
     console.error("Request failed:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { message: "Request failed", error: error.message },
+      { message: "Request failed", error: errorMessage },
       { status: 500 }
     );
   }

@@ -9,7 +9,7 @@ import { useSession } from "next-auth/react";
 
 const Pharmacist = () => {
   const { data: session, status } = useSession();
-  const [currentView, setCurrentView] = useState("homepage");
+  const [currentView, setCurrentView] = useState<string>("homepage");
 
   if (status === "loading") {
     return (
@@ -25,15 +25,17 @@ const Pharmacist = () => {
     setCurrentView(view);
   };
 
+  const userId: string = session?.user?.id?.toString() || '';
+
   return (
     <div data-theme="cupcake">
       <NavPharmacist
-        email={session?.user?.email || "No user data available"}
+        email={(session?.user as { email?: string })?.email || "No user data available"}
         onNavChange={handleNavChange}
       />
-      {currentView === "homepage" && <PharmacistD id={session?.user?.id || "No user data available"}/>}
-      {currentView === "account" && <Account id={session?.user?.id || "No user data available"} email={session?.user?.email || "No user data available"} />}
-      {currentView === "checkRequest" && <CheckRequests id={session?.user?.id || "No user data available"} email={session?.user?.email || "No user data available"}/>}
+      {currentView === "homepage" && <PharmacistD id={userId}/>}
+      {currentView === "account" && <Account id={userId} email={(session?.user as { email?: string })?.email || "No user data available"} />}
+      {currentView === "checkRequest" && <CheckRequests id={userId} email={(session?.user as { email?: string })?.email || "No user data available"}/>}
     </div>
   );
 };

@@ -26,7 +26,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const newRequest = { ...body, isApproved: false, createDate: new Date(),pharmacistId:null,pharmacistEmail:null };
+    const newRequest = { 
+      ...body, 
+      isApproved: false, 
+      createDate: new Date(),
+      pharmacistId: null,
+      pharmacistEmail: null 
+    };
 
     await connectMongoDB(); // Ensure the database connection is established
     await Required.create(newRequest);
@@ -37,8 +43,9 @@ export async function POST(req: NextRequest) {
     );
   } catch (error) {
     console.error("Request registration failed:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { message: "Request registration failed", error: error.message },
+      { message: "Request registration failed", error: errorMessage },
       { status: 500 }
     );
   }

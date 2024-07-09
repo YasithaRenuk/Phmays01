@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import RequestTable from "../components/RequestTable";
 
-const Customer = ({ id }) => {
-  const [requests, setRequests] = useState(null);
-  const [loading, setLoading] = useState(true);
+interface CustomerProps {
+  id: string; // Replace with the appropriate type for id
+}
+
+const Customer: React.FC<CustomerProps> = ({ id }) => {
+  const [requests, setRequests] = useState<any>(null); // Adjust type as per your API response structure
+  const [loading, setLoading] = useState<boolean>(true);
 
   // Function to check if a request is approved
-  function checkApproved(request) {
+  function checkApproved(request: any) { // Adjust type as per your API response structure
     return request.isApproved;
   }
 

@@ -3,15 +3,33 @@ import DrugCard from "../components/drugCard";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
-const RequestTablePha = ({ Requests, phaid,phaEmail }) => {
-  const handleApproval = async (reqId) => {
+interface Drug {
+  name: string;
+  quantity: number;
+  measurement: string;
+}
+
+interface Request {
+  _id: string;
+  createDate: string;
+  drugs: Drug[];
+}
+
+interface RequestTablePhaProps {
+  Requests: Request[];
+  phaid: string;
+  phaEmail: string;
+}
+
+const RequestTablePha: React.FC<RequestTablePhaProps> = ({ Requests, phaid, phaEmail }) => {
+  const handleApproval = async (reqId: string) => {
     try {
       const response = await fetch("/api/pharmacist/Approv", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ reqid: reqId, phaid: phaid,phaEmail:phaEmail }),
+        body: JSON.stringify({ reqid: reqId, phaid: phaid, phaEmail: phaEmail }),
       });
 
       if (response.ok) {
@@ -28,13 +46,19 @@ const RequestTablePha = ({ Requests, phaid,phaEmail }) => {
     }
   };
 
-  const handleYesClick = (reqId, modalId) => {
+  const handleYesClick = (reqId: string, modalId: string) => {
     handleApproval(reqId);
-    document.getElementById(modalId).close();
+    const modal = document.getElementById(modalId) as HTMLDialogElement | null;
+    if (modal) {
+      modal.close();
+    }
   };
 
-  const handleNoClick = (modalId) => {
-    document.getElementById(modalId).close();
+  const handleNoClick = (modalId: string) => {
+    const modal = document.getElementById(modalId) as HTMLDialogElement | null;
+    if (modal) {
+      modal.close();
+    }
   };
 
   return (
@@ -53,7 +77,7 @@ const RequestTablePha = ({ Requests, phaid,phaEmail }) => {
         <tbody>
           {Requests.length === 0 ? (
             <tr>
-              <td colSpan="6">
+              <td colSpan={5}>
                 <div className="stat bg-white">
                   <p>There are no requests.</p>
                 </div>
@@ -87,7 +111,12 @@ const RequestTablePha = ({ Requests, phaid,phaEmail }) => {
                   <td>
                     <button
                       className="btn"
-                      onClick={() => document.getElementById(modalId).showModal()}
+                      onClick={() => {
+                        const modal = document.getElementById(modalId) as HTMLDialogElement | null;
+                        if (modal) {
+                          modal.showModal();
+                        }
+                      }}
                     >
                       Approve
                     </button>

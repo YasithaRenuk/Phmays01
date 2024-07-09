@@ -6,17 +6,19 @@ export async function GET(req: NextRequest) {
   try {
     await connectMongoDB();
 
-    const request = (await Required.find()).filter((e)=>{return !e.isApproved});
+    // Fetch unapproved requests
+    const requests = await Required.find({ isApproved: false });
 
     return NextResponse.json(
-      { message: "Request successful", request: request },
+      { message: "Request successful", requests: requests },
       { status: 200 }
     );
 
   } catch (error) {
     console.error("Request failed:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { message: "Request failed", error: error.message },
+      { message: "Request failed", error: errorMessage },
       { status: 500 }
     );
   }

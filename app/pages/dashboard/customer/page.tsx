@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
 import React, { useState } from "react";
 import NavCustomer from "../../../components/NavCustomer";
 import { useSession } from "next-auth/react";
-import Coustomer from "../../../components/Coustomer"
+import Coustomer from "../../../components/Coustomer";
 import Account from "../../../components/Account";
-import AddRequest from "../../../components/AddRequest"
+import AddRequest from "../../../components/AddRequest";
 
-const Customer = () => {
+const Customer: React.FC = () => {
   const { data: session, status } = useSession();
-  const [currentView, setCurrentView] = useState("homepage");
+  const [currentView, setCurrentView] = useState<string>("homepage");
 
   if (status === "loading") {
     return (
@@ -21,19 +21,29 @@ const Customer = () => {
     );
   }
 
-  const handleNavChange = (view) => {
+  const handleNavChange = (view: string) => {
     setCurrentView(view);
   };
+
+  // Ensure userId is always a string
+  const userId: string = session?.user?.id?.toString() || '';
 
   return (
     <div data-theme="cupcake">
       <NavCustomer
-        email={session?.user?.email || "No user data available"}
+        email={(session?.user as { email?: string })?.email || "No user data available"}
         onNavChange={handleNavChange}
       />
-      {currentView === "homepage" && <Coustomer id = {session?.user.id}/>}
-      {currentView === "account" && <Account id = {session?.user.id|| "No user data available"} email = {session?.user?.email|| "No user data available"}/>}
-      {currentView === "addRequest" && <AddRequest id = {session?.user.id|| "No user data available"}/>}
+      {currentView === "homepage" && <Coustomer id={userId} />}
+      {currentView === "account" && (
+        <Account
+          id={userId}
+          email={(session?.user as { email?: string })?.email || "No user data available"}
+        />
+      )}
+      {currentView === "addRequest" && (
+        <AddRequest id={userId} />
+      )}
     </div>
   );
 };

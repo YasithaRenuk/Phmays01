@@ -24,7 +24,7 @@ const doneRequestSchema = new Schema({
         type: Date,
         required: true,
     },
-    coustomerId: {
+    coustomerEmail: {
         type: String,
         required: true,
     },

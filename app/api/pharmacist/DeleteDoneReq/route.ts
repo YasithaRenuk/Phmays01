@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const customer = await User.findOne({email:approvedrequest.coustomerEmail});
+    const customer = await User.findOne({ email: approvedrequest.coustomerEmail });
     if (!customer) {
       return NextResponse.json(
         { error: "Customer not found" },
@@ -44,13 +44,13 @@ export async function POST(req: NextRequest) {
       pharmacistId: approvedrequest.pharmacistId,
       EndDate: new Date(),
       coustomerId: customer._id,
-      drugs:approvedrequest.drugs
+      drugs: approvedrequest.drugs
     };
 
     const yes = await DoneRequest.create(donerequest);
 
-    await Required.findByIdAndDelete(approvedrequest.RequestId)
-    await ApprovedRequest.findByIdAndDelete(approvedrequest._id)
+    await Required.findByIdAndDelete(approvedrequest.RequestId);
+    await ApprovedRequest.findByIdAndDelete(approvedrequest._id);
 
     return NextResponse.json(
       { message: "Request successful", request: yes },
@@ -59,8 +59,9 @@ export async function POST(req: NextRequest) {
 
   } catch (error) {
     console.error("Request failed:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { message: "Request failed", error: error.message },
+      { message: "Request failed", error: errorMessage },
       { status: 500 }
     );
   }
